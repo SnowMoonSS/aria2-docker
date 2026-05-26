@@ -2,7 +2,7 @@
 
 基于 Alpine 的轻量级 aria2 Docker 镜像，开箱即用，自动生成 RPC 密钥。
 
-[![Docker Image CI](https://github.com/${{ github.repository }}/actions/workflows/docker-image.yml/badge.svg)](https://github.com/${{ github.repository }}/actions/workflows/docker-image.yml)
+[![Docker Image CI](https://github.com/snowmoonss/aria2-docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/snowmoonss/aria2-docker/actions/workflows/docker-image.yml)
 
 ## 特性
 
@@ -38,7 +38,7 @@ docker run -d \
   -p 6881:6881/udp \
   -v /path/to/config:/config \
   -v /path/to/downloads:/downloads \
-  ghcr.io/<your-username>/aria2-docker:latest
+  ghcr.io/snowmoonss/aria2-docker:latest
 ```
 
 首次启动后，查看日志获取 RPC 密钥：
@@ -52,7 +52,7 @@ docker logs aria2 | grep "RPC Secret"
 ```yaml
 services:
   aria2:
-    image: ghcr.io/<your-username>/aria2-docker:latest
+    image: ghcr.io/snowmoonss/aria2-docker:latest
     container_name: aria2
     ports:
       - "6800:6800"
