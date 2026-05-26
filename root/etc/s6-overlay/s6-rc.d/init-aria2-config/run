@@ -7,6 +7,10 @@ mkdir -p /config
 # copy default config
 if [[ ! -f /config/aria2.conf ]]; then
     cp /defaults/aria2.conf /config/aria2.conf
+    # generate 14-character rpc secret
+    RPC_SECRET=$(head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 14)
+    sed -i "s|^#rpc-secret=$|rpc-secret=${RPC_SECRET}|" /config/aria2.conf
+    echo "RPC Secret: ${RPC_SECRET}"
 fi
 
 if [[ -z ${LSIO_NON_ROOT_USER} ]]; then
