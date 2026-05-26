@@ -33,6 +33,7 @@
 ```bash
 docker run -d \
   --name aria2 \
+  -p 80:80 \
   -p 6800:6800 \
   -p 6881:6881/tcp \
   -p 6881:6881/udp \
@@ -55,9 +56,10 @@ services:
         image: ghcr.io/snowmoonss/aria2-docker:latest
         container_name: aria2
         ports:
-            - "6800:6800"
-            - "6881:6881/tcp"
-            - "6881:6881/udp"
+            - "80:80"         # 访问AriaNG的端口
+            - "6800:6800"     # aria2 json rpc暴露的端口
+            - "6881:6881/tcp" # 用于BT下载
+            - "6881:6881/udp" # 用于BT下载
         volumes:
             - ./config:/config
             - ./downloads:/downloads
