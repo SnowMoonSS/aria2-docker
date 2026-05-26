@@ -3,10 +3,10 @@
 
 if [[ -z ${LSIO_NON_ROOT_USER} ]]; then
 exec \
-    s6-notifyoncheck -d -n 300 -w 1000 -c "/usr/local/bin/check_aria2_health" \
-        s6-setuidgid abc aria2c --conf-path=/config/aria2.conf
+    s6-notifyoncheck -d -n 300 -w 1000 -c "curl -sf http://localhost:80/ > /dev/null" \
+        s6-setuidgid abc busybox httpd -f -h /app/ariang -p 80
 else
 exec \
-    s6-notifyoncheck -d -n 300 -w 1000 -c "/usr/local/bin/check_aria2_health" \
-        aria2c --conf-path=/config/aria2.conf
+    s6-notifyoncheck -d -n 300 -w 1000 -c "curl -sf http://localhost:80/ > /dev/null" \
+        busybox httpd -f -h /app/ariang -p 80
 fi
