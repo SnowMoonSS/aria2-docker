@@ -13,6 +13,13 @@ if [[ ! -f /config/aria2.conf ]]; then
     echo "RPC Secret: ${RPC_SECRET}"
 fi
 
+if [[ -d "/config/aria2.session" ]]; then
+    echo "ERROR: /config/aria2.session is a directory, please delete it and restart the container."
+    exit 1
+elif [[ ! -f "/config/aria2.session" ]]; then
+    touch "/config/aria2.session"
+fi
+
 if [[ -z ${LSIO_NON_ROOT_USER} ]]; then
     # chown download directory if currently not set to abc
     if grep -qe ' /downloads ' /proc/mounts; then
