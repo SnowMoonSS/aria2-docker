@@ -3,15 +3,18 @@ FROM ghcr.io/linuxserver/baseimage-alpine:edge AS builder
 WORKDIR /app
 
 RUN apk add --no-cache \
+    grep \
     wget \
     unzip \
-    jq && \
-    # get latest AriaNg release download URL
-    ARIA_DOWNLOAD_URL=$(wget -qO- https://api.github.com/repos/mayswind/AriaNg/releases/latest \
-        | jq -r '.assets[] | select(.name | test("\\.zip$")) | select(.name | test("AllInOne") | not) | .browser_download_url' \
+    git && \
+    # get latest AriaNg version from git tags
+    ARIA_VERSION=$(git ls-remote --tags --sort=-v:refname https://github.com/mayswind/AriaNg.git \
+        | grep -oP 'refs/tags/\K[0-9.]+$' \
         | head -1) && \
-    wget -q "${ARIA_DOWNLOAD_URL}" -O ariang.zip && \
-    unzip ariang.zip -d /app/ariang && \
+    echo "Downloading AriaNg v${ARIA_VERSION}..." && \
+    wget -q "https://github.com/mayswind/AriaNg/releases/download/${ARIA_VERSION}/AriaNg-${ARIA_VERSION}.zip" \
+        -O ariang.zip && \
+    unzip -q ariang.zip -d /app/ariang && \
     rm ariang.zip
 
 FROM ghcr.io/linuxserver/baseimage-alpine:edge
